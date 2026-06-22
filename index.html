@@ -3,84 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USAF PFRA Calculator</title>
+    <title>Air Force PT Calculator</title>
+    <link rel="icon" type="image/png" href="aflogo.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
-        /* Smooth UI Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        .scale-in { animation: scaleIn 0.4s ease-out forwards; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0f172a; 
+            color: #f8fafc; 
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.05), transparent 25%);
+            background-attachment: fixed;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .animate-fade-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-scale-in { animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .delay-100 { animation-delay: 100ms; }
         .delay-200 { animation-delay: 200ms; }
-        
-        /* Glassmorphism Panels */
-        .glass-panel {
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
-            border: 1px solid rgba(56, 189, 248, 0.15);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(8px);
+
+        /* Glassmorphism UI */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        /* Modern Input Styling */
+        input[type="number"], input[type="text"], select {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+            color: #f8fafc;
+            transition: all 0.2s ease;
+        }
+        input:focus, select:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+            outline: none;
         }
         
-        /* Input autofill styling override */
-        input:-webkit-autofill {
-            -webkit-box-shadow: 0 0 0 30px #1e293b inset !important;
-            -webkit-text-fill-color: #f8fafc !important;
-        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
-<body class="min-h-screen antialiased selection:bg-sky-500 selection:text-white pb-12">
+<body class="min-h-screen antialiased selection:bg-sky-500 selection:text-white pb-16">
 
-    <!-- Top Navigation -->
-    <header class="bg-slate-900/80 backdrop-blur-md border-b border-sky-900/40 sticky top-0 z-50">
+    <header class="bg-slate-900/90 backdrop-blur-xl border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <!-- Inline SVG Logo ensuring it never breaks -->
-                <div class="w-12 h-12 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]">
-                    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L15 8.5L22 9.5L17 14L18.5 21L12 17.5L5.5 21L7 14L2 9.5L9 8.5L12 2Z" />
-                        <path d="M2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
-                    </svg>
-                </div>
+                <img src="aflogo.png" alt="USAF Logo" class="w-12 h-12 object-contain drop-shadow-[0_0_10px_rgba(56,189,248,0.3)]">
                 <div>
-                    <h1 class="font-extrabold text-xl tracking-widest text-slate-100 uppercase">PFRA Tracker</h1>
-                    <p class="text-[10px] font-bold text-sky-400 tracking-widest uppercase">Universal Standards</p>
+                    <h1 class="font-black text-xl tracking-widest text-white uppercase">USAF PT Calculator</h1>
+                    <p class="text-[10px] font-bold text-sky-400 tracking-widest uppercase mt-0.5">Updated Scoring Standards</p>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- Assessment Entry Form -->
-            <div class="lg:col-span-4 glass-panel rounded-2xl p-6 sm:p-8 opacity-0 fade-in">
-                <h2 class="text-lg font-bold text-white mb-6 flex items-center border-b border-slate-700 pb-3">
-                    <i class="fa-solid fa-id-card text-sky-400 mr-3"></i> Airman Profile
+            <div class="lg:col-span-4 glass-card rounded-3xl p-6 sm:p-8 opacity-0 animate-fade-up">
+                
+                <h2 class="text-lg font-bold text-white mb-5 flex items-center border-b border-slate-700/60 pb-3">
+                    <i class="fa-solid fa-user-astronaut text-sky-400 mr-3 text-xl"></i> Airman Profile
                 </h2>
                 
-                <form id="calcForm" class="space-y-5">
+                <form id="ptForm" class="space-y-6">
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5">Name / Identifier</label>
-                        <input type="text" id="name" required placeholder="e.g. Doe, J." 
-                               class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 transition-all">
+                        <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Member Name</label>
+                        <input type="text" id="name" required placeholder="e.g. John Doe" class="w-full rounded-xl px-4 py-3">
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5">Gender</label>
-                            <select id="gender" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 transition-all cursor-pointer">
+                            <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Gender</label>
+                            <select id="gender" class="w-full rounded-xl px-4 py-3 cursor-pointer">
                                 <option value="M" selected>Male</option>
                                 <option value="F">Female</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5">Age Bracket</label>
-                            <select id="ageBracket" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400 transition-all cursor-pointer">
+                            <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Age</label>
+                            <select id="ageBracket" class="w-full rounded-xl px-4 py-3 cursor-pointer">
                                 <option value="<25">Under 25</option>
                                 <option value="25-29" selected>25 - 29</option>
                                 <option value="30-34">30 - 34</option>
@@ -94,133 +119,140 @@
                         </div>
                     </div>
 
-                    <h2 class="text-lg font-bold text-white mt-8 mb-4 flex items-center border-b border-slate-700 pb-3 pt-2">
-                        <i class="fa-solid fa-stopwatch text-sky-400 mr-3"></i> Component Data
-                    </h2>
+                    <div class="pt-4 mt-2 border-t border-slate-700/60">
+                        <h2 class="text-lg font-bold text-white mb-5 flex items-center border-b border-slate-700/60 pb-3">
+                            <i class="fa-solid fa-stopwatch-20 text-amber-400 mr-3 text-xl"></i> Assessment Data
+                        </h2>
+                    </div>
 
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5">2-Mile Run Time</label>
-                        <div class="flex items-center space-x-2">
-                            <input type="number" id="runMin" min="0" max="59" required placeholder="Min" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2.5 text-center font-mono focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400">
-                            <span class="text-slate-500 font-bold">:</span>
-                            <input type="number" id="runSec" min="0" max="59" required placeholder="Sec" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-2.5 text-center font-mono focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400">
+                        <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">2-Mile Run Time</label>
+                        <div class="flex items-center space-x-3">
+                            <input type="number" id="runMin" min="0" max="59" required placeholder="Min" class="w-full rounded-xl px-4 py-3 text-center text-lg font-mono">
+                            <span class="text-slate-500 font-black text-xl">:</span>
+                            <input type="number" id="runSec" min="0" max="59" required placeholder="Sec" class="w-full rounded-xl px-4 py-3 text-center text-lg font-mono">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5">Push-ups</label>
-                            <input type="number" id="pushups" min="0" required placeholder="1 Min" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-2.5 text-center font-mono focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400">
+                            <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Push-ups</label>
+                            <input type="number" id="pushups" min="0" required placeholder="Reps" class="w-full rounded-xl px-4 py-3 text-center text-lg font-mono">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5">Sit-ups</label>
-                            <input type="number" id="situps" min="0" required placeholder="1 Min" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-2.5 text-center font-mono focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400">
+                            <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Sit-ups</label>
+                            <input type="number" id="situps" min="0" required placeholder="Reps" class="w-full rounded-xl px-4 py-3 text-center text-lg font-mono">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5">WHtR (Waist ÷ Height)</label>
-                        <input type="number" id="whtr" min="0.30" max="0.80" step="0.01" required placeholder="e.g. 0.46" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-2.5 font-mono focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400">
+                        <label class="flex justify-between text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+                            <span>WHtR Ratio</span>
+                            <span class="text-sky-400 font-medium normal-case tracking-normal">Waist ÷ Height</span>
+                        </label>
+                        <input type="number" id="whtr" min="0.30" max="0.80" step="0.01" required placeholder="0.46" class="w-full rounded-xl px-4 py-3 text-lg font-mono">
                     </div>
 
-                    <button type="submit" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-900 font-extrabold tracking-wide py-3.5 px-4 rounded-lg transition duration-200 shadow-[0_0_15px_rgba(56,189,248,0.3)] hover:shadow-[0_0_20px_rgba(56,189,248,0.5)] mt-4">
-                        PROCESS SCORE
+                    <button type="submit" class="w-full mt-8 bg-sky-500 hover:bg-sky-400 text-slate-950 font-black tracking-widest py-4 px-4 rounded-xl transition duration-300 shadow-[0_0_20px_rgba(56,189,248,0.3)] hover:shadow-[0_0_25px_rgba(56,189,248,0.5)] hover:-translate-y-0.5 flex justify-center items-center">
+                        CALCULATE SCORE
                     </button>
                 </form>
             </div>
 
-            <!-- Score Visualizer & Dashboard -->
-            <div class="lg:col-span-8 space-y-6">
+            <div class="lg:col-span-8 space-y-8">
                 
-                <div class="glass-panel rounded-2xl p-6 sm:p-8 opacity-0 scale-in delay-100">
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="glass-card rounded-3xl p-6 sm:p-10 opacity-0 animate-scale-in delay-100 relative overflow-hidden">
+                    <div class="absolute -right-32 -bottom-32 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-center relative z-10">
                         
-                        <!-- Composite Score Display -->
-                        <div class="md:col-span-4 flex flex-col items-center justify-center p-6 bg-slate-900/50 rounded-xl border border-slate-700/50">
-                            <h3 class="text-xs uppercase font-bold text-slate-400 tracking-widest mb-1">Final Score</h3>
-                            <span id="scoreTotal" class="text-6xl font-black text-white tabular-nums drop-shadow-md">0.0</span>
-                            <div id="scoreBadge" class="mt-3 px-5 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase bg-slate-800 text-slate-500 border border-slate-700 transition-all">
-                                WAITING
+                        <div class="md:col-span-5 flex flex-col items-center justify-center p-8 bg-slate-900/80 rounded-3xl border border-slate-700/50 shadow-inner">
+                            <span class="text-[11px] uppercase font-black text-slate-400 tracking-widest mb-3">Composite Score</span>
+                            <span id="scoreTotal" class="text-7xl lg:text-8xl font-black text-white tabular-nums tracking-tighter drop-shadow-lg">0.0</span>
+                            <div id="scoreBadge" class="mt-6 px-6 py-2 rounded-full text-xs font-black tracking-widest uppercase bg-slate-800 text-slate-500 border border-slate-700 transition-all duration-300">
+                                PENDING
                             </div>
                         </div>
 
-                        <!-- Component Progress Bars -->
-                        <div class="md:col-span-8 space-y-4 w-full">
-                            
-                            <!-- Run -->
+                        <div class="md:col-span-7 space-y-6 w-full">
                             <div>
-                                <div class="flex justify-between items-end mb-1.5">
-                                    <span class="text-xs font-bold text-slate-300 uppercase"><i class="fa-solid fa-person-running text-sky-400 w-4"></i> Run</span>
-                                    <span class="text-sm font-bold text-white"><span id="ptsRun">0.0</span> <span class="text-slate-500 text-xs">/ 50</span></span>
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-xs font-bold text-slate-300 uppercase tracking-widest flex items-center">
+                                        <div class="w-6 flex justify-center text-sky-400 mr-2"><i class="fa-solid fa-person-running"></i></div> Run
+                                    </span>
+                                    <span class="text-base font-black text-white"><span id="ptsRun">0.0</span> <span class="text-slate-500 text-xs">/ 50.0</span></span>
                                 </div>
-                                <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
-                                    <div id="barRun" class="bg-sky-400 h-2.5 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                                <div class="w-full bg-slate-900 rounded-full h-3.5 shadow-inner border border-slate-800 overflow-hidden">
+                                    <div id="barRun" class="bg-sky-400 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(56,189,248,0.5)]" style="width: 0%"></div>
                                 </div>
                             </div>
                             
-                            <!-- Pushups -->
                             <div>
-                                <div class="flex justify-between items-end mb-1.5">
-                                    <span class="text-xs font-bold text-slate-300 uppercase"><i class="fa-solid fa-hand-fist text-amber-400 w-4"></i> Push-ups</span>
-                                    <span class="text-sm font-bold text-white"><span id="ptsPush">0.0</span> <span class="text-slate-500 text-xs">/ 15</span></span>
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-xs font-bold text-slate-300 uppercase tracking-widest flex items-center">
+                                        <div class="w-6 flex justify-center text-amber-400 mr-2"><i class="fa-solid fa-hand-fist"></i></div> Push-ups
+                                    </span>
+                                    <span class="text-base font-black text-white"><span id="ptsPush">0.0</span> <span class="text-slate-500 text-xs">/ 15.0</span></span>
                                 </div>
-                                <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
-                                    <div id="barPush" class="bg-amber-400 h-2.5 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                                <div class="w-full bg-slate-900 rounded-full h-3.5 shadow-inner border border-slate-800 overflow-hidden">
+                                    <div id="barPush" class="bg-amber-400 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(251,191,36,0.5)]" style="width: 0%"></div>
                                 </div>
                             </div>
 
-                            <!-- Situps -->
                             <div>
-                                <div class="flex justify-between items-end mb-1.5">
-                                    <span class="text-xs font-bold text-slate-300 uppercase"><i class="fa-solid fa-dumbbell text-emerald-400 w-4"></i> Sit-ups</span>
-                                    <span class="text-sm font-bold text-white"><span id="ptsSit">0.0</span> <span class="text-slate-500 text-xs">/ 15</span></span>
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-xs font-bold text-slate-300 uppercase tracking-widest flex items-center">
+                                        <div class="w-6 flex justify-center text-emerald-400 mr-2"><i class="fa-solid fa-dumbbell"></i></div> Sit-ups
+                                    </span>
+                                    <span class="text-base font-black text-white"><span id="ptsSit">0.0</span> <span class="text-slate-500 text-xs">/ 15.0</span></span>
                                 </div>
-                                <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
-                                    <div id="barSit" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                                <div class="w-full bg-slate-900 rounded-full h-3.5 shadow-inner border border-slate-800 overflow-hidden">
+                                    <div id="barSit" class="bg-emerald-400 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(52,211,153,0.5)]" style="width: 0%"></div>
                                 </div>
                             </div>
 
-                            <!-- WHtR -->
                             <div>
-                                <div class="flex justify-between items-end mb-1.5">
-                                    <span class="text-xs font-bold text-slate-300 uppercase"><i class="fa-solid fa-weight-scale text-purple-400 w-4"></i> WHtR</span>
-                                    <span class="text-sm font-bold text-white"><span id="ptsWhtr">0.0</span> <span class="text-slate-500 text-xs">/ 20</span></span>
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-xs font-bold text-slate-300 uppercase tracking-widest flex items-center">
+                                        <div class="w-6 flex justify-center text-purple-400 mr-2"><i class="fa-solid fa-weight-scale"></i></div> WHtR
+                                    </span>
+                                    <span class="text-base font-black text-white"><span id="ptsWhtr">0.0</span> <span class="text-slate-500 text-xs">/ 20.0</span></span>
                                 </div>
-                                <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
-                                    <div id="barWhtr" class="bg-purple-400 h-2.5 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                                <div class="w-full bg-slate-900 rounded-full h-3.5 shadow-inner border border-slate-800 overflow-hidden">
+                                    <div id="barWhtr" class="bg-purple-400 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(192,132,252,0.5)]" style="width: 0%"></div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
-                <!-- History Table -->
-                <div class="glass-panel rounded-2xl p-6 sm:p-8 opacity-0 scale-in delay-200">
-                    <div class="flex items-center justify-between mb-5">
-                        <h2 class="text-lg font-bold text-white flex items-center">
-                            <i class="fa-solid fa-clock-rotate-left text-sky-400 mr-3"></i> Training Logs
-                        </h2>
-                        <button id="clearBtn" class="text-xs font-bold text-rose-400 hover:text-rose-300 uppercase tracking-wider transition">
-                            Clear Data
+                <div class="glass-card rounded-3xl p-6 sm:p-8 opacity-0 animate-fade-up delay-200">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-clock-rotate-left text-sky-400 text-xl"></i>
+                            <h2 class="text-lg font-bold text-white">Recent Sessions</h2>
+                        </div>
+                        <button id="clearLogs" class="text-[10px] font-bold text-rose-400 hover:text-rose-300 uppercase tracking-widest transition flex items-center px-3 py-1.5 rounded-lg hover:bg-rose-500/10">
+                            <i class="fa-solid fa-trash-can mr-2"></i> Clear History
                         </button>
                     </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="text-xs text-slate-400 uppercase tracking-wider border-b border-slate-700/60 bg-slate-800/30">
-                                    <th class="p-3 font-semibold rounded-tl-lg">Airman</th>
-                                    <th class="p-3 font-semibold text-center">Run</th>
-                                    <th class="p-3 font-semibold text-center">P / S</th>
-                                    <th class="p-3 font-semibold text-center">WHtR</th>
-                                    <th class="p-3 font-semibold text-right rounded-tr-lg">Result</th>
-                                </tr>
-                            </thead>
-                            <tbody id="historyBody" class="divide-y divide-slate-800 text-sm">
-                                <!-- Data injects here -->
-                            </tbody>
-                        </table>
+                    <div class="rounded-2xl border border-slate-700/60 bg-slate-900/50 overflow-hidden shadow-inner">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left whitespace-nowrap">
+                                <thead class="bg-slate-800/80 text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-700/80">
+                                    <tr>
+                                        <th class="px-6 py-4">Airman Details</th>
+                                        <th class="px-4 py-4 text-center">Run</th>
+                                        <th class="px-4 py-4 text-center">Push / Sit</th>
+                                        <th class="px-4 py-4 text-center">WHtR</th>
+                                        <th class="px-6 py-4 text-right">Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyTable" class="divide-y divide-slate-800 text-sm">
+                                    </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -229,35 +261,37 @@
     </main>
 
     <script>
-        // Full, precise datasets sourced directly from the provided CSVs
-        const preciseData = {"run": {"M": {"<25": [[805, 50.0], [824, 49.5], [843, 49.0], [862, 48.0], [881, 47.0], [900, 46.0], [919, 45.0], [938, 44.0], [957, 43.0], [976, 42.0], [995, 41.0], [1014, 40.0], [1033, 39.0], [1052, 38.5], [1071, 38.0], [1090, 37.5], [1109, 37.0], [1128, 36.5], [1147, 36.0], [1176, 35.5], [1185, 35.0]], "25-29": [[815, 50.0], [834, 49.5], [853, 49.0], [872, 48.0], [891, 47.0], [910, 46.0], [929, 45.0], [948, 44.0], [967, 43.0], [986, 42.0], [1005, 41.0], [1024, 40.0], [1043, 39.0], [1062, 38.5], [1081, 38.0], [1100, 37.5], [1119, 37.0], [1138, 36.5], [1157, 36.0], [1176, 35.5], [1195, 35.0]], "30-34": [[822, 50.0], [843, 49.5], [864, 49.0], [885, 48.0], [906, 47.0], [928, 46.0], [949, 45.0], [970, 44.0], [991, 43.0], [1012, 42.0], [1033, 41.0], [1054, 40.0], [1075, 39.0], [1096, 38.5], [1117, 38.0], [1139, 37.5], [1160, 37.0], [1181, 36.5], [1202, 36.0], [1223, 35.5], [1244, 35.0]], "35-39": [[836, 50.0], [858, 49.5], [880, 49.0], [902, 48.0], [924, 47.0], [946, 46.0], [968, 45.0], [990, 44.0], [1012, 43.0], [1034, 42.0], [1056, 41.0], [1078, 40.0], [1100, 39.0], [1122, 38.5], [1144, 38.0], [1166, 37.5], [1188, 37.0], [1210, 36.5], [1232, 36.0], [1254, 35.5], [1276, 35.0]], "40-44": [[845, 50.0], [869, 49.5], [893, 49.0], [917, 48.0], [941, 47.0], [965, 46.0], [989, 45.0], [1013, 44.0], [1037, 43.0], [1061, 42.0], [1085, 41.0], [1108, 40.0], [1132, 39.0], [1156, 38.5], [1180, 38.0], [1204, 37.5], [1228, 37.0], [1252, 36.5], [1276, 36.0], [1300, 35.5], [1324, 35.0]], "45-49": [[870, 50.0], [894, 49.5], [918, 49.0], [942, 48.0], [965, 47.0], [989, 46.0], [1013, 45.0], [1037, 44.0], [1061, 43.0], [1085, 42.0], [1109, 41.0], [1132, 40.0], [1156, 39.0], [1180, 38.5], [1204, 38.0], [1228, 37.5], [1252, 37.0], [1275, 36.5], [1299, 36.0], [1323, 35.5], [1347, 35.0]], "50-54": [[909, 50.0], [932, 49.5], [955, 49.0], [978, 48.0], [1001, 47.0], [1024, 46.0], [1047, 45.0], [1070, 44.0], [1093, 43.0], [1116, 42.0], [1140, 41.0], [1163, 40.0], [1186, 39.0], [1209, 38.5], [1232, 38.0], [1255, 37.5], [1278, 37.0], [1301, 36.5], [1324, 36.0], [1347, 35.5], [1370, 35.0]], "55-59": [[928, 50.0], [952, 49.5], [977, 49.0], [1001, 48.0], [1026, 47.0], [1050, 46.0], [1074, 45.0], [1099, 44.0], [1123, 43.0], [1148, 42.0], [1172, 41.0], [1196, 40.0], [1221, 39.0], [1245, 38.5], [1270, 38.0], [1294, 37.5], [1318, 37.0], [1343, 36.5], [1367, 36.0], [1392, 35.5], [1416, 35.0]], "60+": [[1018, 50.0], [1039, 49.5], [1060, 49.0], [1081, 48.0], [1102, 47.0], [1124, 46.0], [1145, 45.0], [1166, 44.0], [1187, 43.0], [1208, 42.0], [1229, 41.0], [1250, 40.0], [1271, 39.0], [1292, 38.5], [1313, 38.0], [1335, 37.5], [1347, 37.0], [1356, 36.5], [1398, 36.0], [1419, 35.5], [1440, 35.0]]}, "F": {"<25": [[930, 50.0], [960, 49.5], [989, 49.0], [1019, 48.0], [1049, 47.0], [1078, 46.0], [1108, 45.0], [1138, 44.0], [1167, 43.0], [1197, 42.0], [1227, 41.0], [1256, 40.0], [1286, 39.0], [1315, 38.5], [1345, 38.0], [1375, 37.5], [1404, 37.0], [1434, 36.5], [1464, 36.0], [1493, 35.5], [1523, 35.0]], "25-29": [[955, 50.0], [984, 49.5], [1014, 49.0], [1043, 48.0], [1072, 47.0], [1101, 46.0], [1131, 45.0], [1160, 44.0], [1189, 43.0], [1218, 42.0], [1248, 41.0], [1277, 40.0], [1306, 39.0], [1335, 38.5], [1365, 38.0], [1394, 37.5], [1423, 37.0], [1452, 36.5], [1482, 36.0], [1511, 35.5], [1540, 35.0]], "30-34": [[970, 50.0], [1000, 49.5], [1031, 49.0], [1061, 48.0], [1091, 47.0], [1121, 46.0], [1152, 45.0], [1182, 44.0], [1212, 43.0], [1242, 42.0], [1273, 41.0], [1303, 40.0], [1333, 39.0], [1363, 38.5], [1394, 38.0], [1424, 37.5], [1454, 37.0], [1484, 36.5], [1515, 36.0], [1545, 35.5], [1575, 35.0]], "35-39": [[972, 50.0], [1003, 49.5], [1034, 49.0], [1065, 48.0], [1096, 47.0], [1127, 46.0], [1157, 45.0], [1188, 44.0], [1219, 43.0], [1250, 42.0], [1281, 41.0], [1312, 40.0], [1343, 39.0], [1374, 38.5], [1405, 38.0], [1436, 37.5], [1466, 37.0], [1497, 36.5], [1528, 36.0], [1559, 35.5], [1590, 35.0]], "40-44": [[1005, 50.0], [1035, 49.5], [1066, 49.0], [1096, 48.0], [1126, 47.0], [1157, 46.0], [1187, 45.0], [1217, 44.0], [1248, 43.0], [1278, 42.0], [1309, 41.0], [1339, 40.0], [1369, 39.0], [1400, 38.5], [1430, 38.0], [1460, 37.5], [1491, 37.0], [1521, 36.5], [1551, 36.0], [1582, 35.5], [1612, 35.0]], "45-49": [[1015, 50.0], [1046, 49.5], [1077, 49.0], [1108, 48.0], [1139, 47.0], [1170, 46.0], [1201, 45.0], [1232, 44.0], [1263, 43.0], [1294, 42.0], [1325, 41.0], [1356, 40.0], [1387, 39.0], [1418, 38.5], [1449, 38.0], [1480, 37.5], [1511, 37.0], [1542, 36.5], [1573, 36.0], [1604, 35.5], [1635, 35.0]], "50-54": [[1030, 50.0], [1063, 49.5], [1096, 49.0], [1128, 48.0], [1161, 47.0], [1194, 46.0], [1227, 45.0], [1259, 44.0], [1292, 43.0], [1325, 42.0], [1358, 41.0], [1390, 40.0], [1423, 39.0], [1456, 38.5], [1489, 38.0], [1521, 37.5], [1554, 37.0], [1587, 36.5], [1620, 36.0], [1652, 35.5], [1685, 35.0]], "55-59": [[1063, 50.0], [1096, 49.5], [1129, 49.0], [1162, 48.0], [1194, 47.0], [1227, 46.0], [1260, 45.0], [1293, 44.0], [1326, 43.0], [1359, 42.0], [1392, 41.0], [1424, 40.0], [1457, 39.0], [1490, 38.5], [1523, 38.0], [1556, 37.5], [1589, 37.0], [1621, 36.5], [1654, 36.0], [1687, 35.5], [1720, 35.0]], "60+": [[1100, 50.0], [1134, 49.5], [1168, 49.0], [1202, 48.0], [1236, 47.0], [1270, 46.0], [1304, 45.0], [1338, 44.0], [1372, 43.0], [1406, 42.0], [1440, 41.0], [1474, 40.0], [1508, 39.0], [1542, 38.5], [1576, 38.0], [1610, 37.5], [1644, 37.0], [1678, 36.5], [1712, 36.0], [1746, 35.5], [1780, 35.0]]}}, "situp": {"M": {"<25": [[58, 15.0], [57, 14.5], [56, 14.0], [55, 13.5], [54, 13.0], [53, 12.5], [52, 12.0], [51, 11.5], [50, 11.0], [49, 10.5], [48, 10.0], [47, 9.5], [46, 9.0], [45, 8.5], [44, 8.0], [43, 7.5], [42, 7.0], [41, 6.5], [40, 6.0], [39, 5.5], [38, 5.0], [37, 4.5], [36, 4.0], [35, 3.5], [34, 3.0], [33, 2.5]], "25-29": [[56, 15.0], [55, 14.5], [54, 14.0], [53, 13.5], [52, 13.0], [51, 12.5], [50, 12.0], [49, 11.5], [48, 11.0], [47, 10.5], [46, 10.0], [45, 9.5], [44, 9.0], [43, 8.5], [42, 8.0], [41, 7.5], [40, 7.0], [39, 6.5], [38, 6.0], [37, 5.5], [36, 5.0], [35, 4.5], [34, 4.0], [33, 3.5], [32, 3.0], [31, 2.5]], "30-34": [[54, 15.0], [53, 14.5], [52, 14.0], [51, 13.5], [50, 13.0], [49, 12.5], [48, 12.0], [47, 11.5], [46, 11.0], [45, 10.5], [44, 10.0], [43, 9.5], [42, 9.0], [41, 8.5], [40, 8.0], [39, 7.5], [38, 7.0], [37, 6.5], [36, 6.0], [35, 5.5], [34, 5.0], [33, 4.5], [32, 4.0], [31, 3.5], [30, 3.0], [29, 2.5]], "35-39": [[52, 15.0], [51, 14.5], [50, 14.0], [49, 13.5], [48, 13.0], [47, 12.5], [46, 12.0], [45, 11.5], [44, 11.0], [43, 10.5], [42, 10.0], [41, 9.5], [40, 9.0], [39, 8.5], [38, 8.0], [37, 7.5], [36, 7.0], [35, 6.5], [34, 6.0], [33, 5.5], [32, 5.0], [31, 4.5], [30, 4.0], [29, 3.5], [28, 3.0], [27, 2.5]], "40-44": [[50, 15.0], [49, 14.5], [48, 14.0], [47, 13.5], [46, 13.0], [45, 12.5], [44, 12.0], [43, 11.5], [42, 11.0], [41, 10.5], [40, 10.0], [39, 9.5], [38, 9.0], [37, 8.5], [36, 8.0], [35, 7.5], [34, 7.0], [33, 6.5], [32, 6.0], [31, 5.5], [30, 5.0], [29, 4.5], [28, 4.0], [27, 3.5], [26, 3.0], [25, 2.5]], "45-49": [[48, 15.0], [47, 14.5], [46, 14.0], [45, 13.5], [44, 13.0], [43, 12.5], [42, 12.0], [41, 11.5], [40, 11.0], [39, 10.5], [38, 10.0], [37, 9.5], [36, 9.0], [35, 8.5], [34, 8.0], [33, 7.5], [32, 7.0], [31, 6.5], [30, 6.0], [29, 5.5], [28, 5.0], [27, 4.5], [26, 4.0], [25, 3.5], [24, 3.0], [23, 2.5]], "50-54": [[46, 15.0], [45, 14.5], [44, 14.0], [43, 13.5], [42, 13.0], [41, 12.5], [40, 12.0], [39, 11.5], [38, 11.0], [37, 10.5], [36, 10.0], [35, 9.5], [34, 9.0], [33, 8.5], [32, 8.0], [31, 7.5], [30, 7.0], [29, 6.5], [28, 6.0], [27, 5.5], [26, 5.0], [25, 4.5], [24, 4.0], [23, 3.5], [22, 3.0], [21, 2.5]], "55-59": [[44, 15.0], [43, 14.5], [42, 14.0], [41, 13.5], [40, 13.0], [39, 12.5], [38, 12.0], [37, 11.5], [36, 11.0], [35, 10.5], [34, 10.0], [33, 9.5], [32, 9.0], [31, 8.5], [30, 8.0], [29, 7.5], [28, 7.0], [27, 6.5], [26, 6.0], [25, 5.5], [24, 5.0], [23, 4.5], [22, 4.0], [21, 3.5], [20, 3.0], [19, 2.5]], "60+": [[42, 15.0], [41, 14.5], [40, 14.0], [39, 13.5], [38, 13.0], [37, 12.5], [36, 12.0], [35, 11.5], [34, 11.0], [33, 10.5], [32, 10.0], [31, 9.5], [30, 9.0], [29, 8.5], [28, 8.0], [27, 7.5], [26, 7.0], [25, 6.5], [24, 6.0], [23, 5.5], [22, 5.0], [21, 4.5], [20, 4.0], [19, 3.5], [18, 3.0], [17, 2.5]]}, "F": {"<25": [[54, 15.0], [53, 14.5], [52, 14.0], [51, 13.5], [50, 13.0], [49, 12.5], [48, 12.0], [47, 11.5], [46, 11.0], [45, 10.5], [44, 10.0], [43, 9.5], [42, 9.0], [41, 8.5], [40, 8.0], [39, 7.5], [38, 7.0], [37, 6.5], [36, 6.0], [35, 5.5], [34, 5.0], [33, 4.5], [32, 4.0], [31, 3.5], [30, 3.0], [29, 2.5]], "25-29": [[50, 15.0], [49, 14.5], [48, 14.0], [47, 13.5], [46, 13.0], [45, 12.5], [44, 12.0], [43, 11.5], [42, 11.0], [41, 10.5], [40, 10.0], [39, 9.5], [38, 9.0], [37, 8.5], [36, 8.0], [35, 7.5], [34, 7.0], [33, 6.5], [32, 6.0], [31, 5.5], [30, 5.0], [29, 4.5], [28, 4.0], [27, 3.5], [26, 3.0], [25, 2.5]], "30-34": [[45, 15.0], [44, 14.5], [43, 14.0], [42, 13.5], [41, 13.0], [40, 12.5], [39, 12.0], [38, 11.5], [37, 11.0], [36, 10.5], [35, 10.0], [34, 9.5], [33, 9.0], [32, 8.5], [31, 8.0], [30, 7.5], [29, 7.0], [28, 6.5], [27, 6.0], [26, 5.5], [25, 5.0], [24, 4.5], [23, 4.0], [22, 3.5], [21, 3.0], [20, 2.5]], "35-39": [[43, 15.0], [42, 14.5], [41, 14.0], [40, 13.5], [39, 13.0], [38, 12.5], [37, 12.0], [36, 11.5], [35, 11.0], [34, 10.5], [33, 10.0], [32, 9.5], [31, 9.0], [30, 8.5], [29, 8.0], [28, 7.5], [27, 7.0], [26, 6.5], [25, 6.0], [24, 5.5], [23, 5.0], [22, 4.5], [21, 4.0], [20, 3.5], [19, 3.0], [18, 2.5]], "40-44": [[41, 15.0], [40, 14.5], [39, 14.0], [38, 13.5], [37, 13.0], [36, 12.5], [35, 12.0], [34, 11.5], [33, 11.0], [32, 10.5], [31, 10.0], [30, 9.5], [29, 9.0], [28, 8.5], [27, 8.0], [26, 7.5], [25, 7.0], [24, 6.5], [23, 6.0], [22, 5.5], [21, 5.0], [20, 4.5], [19, 4.0], [18, 3.5], [17, 3.0], [16, 2.5]], "45-49": [[35, 15.0], [34, 14.5], [33, 14.0], [32, 13.5], [31, 13.0], [30, 12.5], [29, 12.0], [28, 11.5], [27, 11.0], [26, 10.5], [25, 10.0], [24, 9.5], [23, 9.0], [22, 8.5], [21, 8.0], [20, 7.5], [19, 7.0], [18, 6.5], [17, 6.0], [16, 5.5], [15, 5.0], [14, 4.5], [13, 4.0], [12, 3.5], [11, 3.0], [10, 2.5]], "50-54": [[34, 15.0], [33, 14.5], [32, 14.0], [31, 13.5], [30, 13.0], [29, 12.5], [28, 12.0], [27, 11.5], [26, 11.0], [25, 10.5], [24, 10.0], [23, 9.5], [22, 9.0], [21, 8.5], [20, 8.0], [19, 7.5], [18, 7.0], [17, 6.5], [16, 6.0], [15, 5.5], [14, 5.0], [13, 4.5], [12, 4.0], [11, 3.5], [10, 3.0], [9, 2.5]], "55-59": [[32, 15.0], [31, 14.5], [30, 14.0], [29, 13.5], [28, 13.0], [27, 12.5], [26, 12.0], [25, 11.5], [24, 11.0], [23, 10.5], [22, 10.0], [21, 9.5], [20, 9.0], [19, 8.5], [18, 8.0], [17, 7.5], [16, 7.0], [15, 6.5], [14, 6.0], [13, 5.5], [12, 5.0], [11, 4.5], [10, 4.0], [9, 3.5], [8, 3.0], [7, 2.5]], "60+": [[31, 15.0], [30, 14.5], [29, 14.0], [28, 13.5], [27, 13.0], [26, 12.5], [25, 12.0], [24, 11.5], [23, 11.0], [22, 10.5], [21, 10.0], [20, 9.5], [19, 9.0], [18, 8.5], [17, 8.0], [16, 7.5], [15, 7.0], [14, 6.5], [13, 6.0], [12, 5.5], [11, 5.0], [10, 4.5], [9, 4.0], [8, 3.5], [7, 3.0], [6, 2.5]]}}, "pushup": {"M": {"<25": [[67, 15.0], [66, 14.5], [64, 14.0], [63, 13.5], [61, 13.0], [60, 12.5], [58, 12.0], [57, 11.5], [55, 11.0], [54, 10.5], [52, 10.0], [51, 9.5], [49, 9.0], [48, 8.5], [46, 8.0], [45, 7.5], [43, 7.0], [42, 6.5], [40, 6.0], [39, 5.5], [37, 5.0], [36, 4.5], [34, 4.0], [33, 3.5], [31, 3.0], [30, 2.5]], "25-29": [[63, 15.0], [62, 14.5], [60, 14.0], [59, 13.5], [57, 13.0], [56, 12.5], [55, 12.0], [53, 11.5], [52, 11.0], [50, 10.5], [49, 10.0], [48, 9.5], [46, 9.0], [45, 8.5], [43, 8.0], [42, 7.5], [41, 7.0], [39, 6.5], [38, 6.0], [36, 5.5], [35, 5.0], [34, 4.5], [32, 4.0], [31, 3.5], [29, 3.0], [28, 2.5]], "30-34": [[60, 15.0], [59, 14.5], [57, 14.0], [56, 13.5], [55, 13.0], [53, 12.5], [52, 12.0], [51, 11.5], [49, 11.0], [48, 10.5], [47, 10.0], [45, 9.5], [44, 9.0], [43, 8.5], [41, 8.0], [40, 7.5], [39, 7.0], [37, 6.5], [36, 6.0], [35, 5.5], [33, 5.0], [32, 4.5], [31, 4.0], [29, 3.5], [26, 3.0], [26, 2.5]], "35-39": [[56, 15.0], [55, 14.5], [53, 14.0], [52, 13.5], [51, 13.0], [49, 12.5], [48, 12.0], [47, 11.5], [45, 11.0], [44, 10.5], [43, 10.0], [41, 9.5], [40, 9.0], [39, 8.5], [38, 8.0], [36, 7.5], [35, 7.0], [34, 6.5], [32, 6.0], [31, 5.5], [30, 5.0], [28, 4.5], [27, 4.0], [26, 3.5], [24, 3.0], [23, 2.5]], "40-44": [[52, 15.0], [51, 14.5], [50, 14.0], [49, 13.5], [48, 13.0], [46, 12.5], [45, 12.0], [44, 11.5], [42, 11.0], [41, 10.5], [40, 10.0], [39, 9.5], [37, 9.0], [36, 8.5], [35, 8.0], [33, 7.5], [32, 7.0], [31, 6.5], [30, 6.0], [28, 5.5], [27, 5.0], [26, 4.5], [24, 4.0], [23, 3.5], [22, 3.0], [21, 2.5]], "45-49": [[49, 15.0], [47, 14.5], [46, 14.0], [45, 13.5], [44, 13.0], [43, 12.5], [42, 12.0], [40, 11.5], [39, 11.0], [38, 10.5], [37, 10.0], [36, 9.5], [35, 9.0], [33, 8.5], [32, 8.0], [31, 7.5], [30, 7.0], [29, 6.5], [28, 6.0], [26, 5.5], [25, 5.0], [24, 4.5], [23, 4.0], [22, 3.5], [21, 3.0], [19, 2.5]], "50-54": [[45, 15.0], [44, 14.5], [43, 14.0], [42, 13.5], [41, 13.0], [39, 12.5], [38, 12.0], [37, 11.5], [36, 11.0], [35, 10.5], [34, 10.0], [33, 9.5], [32, 9.0], [30, 8.5], [29, 8.0], [28, 7.5], [27, 7.0], [26, 6.5], [25, 6.0], [24, 5.5], [23, 5.0], [21, 4.5], [20, 4.0], [19, 3.5], [18, 3.0], [17, 2.5]], "55-59": [[42, 15.0], [41, 14.5], [40, 14.0], [39, 13.5], [38, 13.0], [36, 12.5], [35, 12.0], [34, 11.5], [33, 11.0], [32, 10.5], [31, 10.0], [30, 9.5], [29, 9.0], [27, 8.5], [26, 8.0], [25, 7.5], [24, 7.0], [23, 6.5], [22, 6.0], [21, 5.5], [20, 5.0], [18, 4.5], [17, 4.0], [16, 3.5], [15, 3.0], [14, 2.5]], "60+": [[38, 15.0], [37, 14.5], [36, 14.0], [35, 13.5], [34, 13.0], [33, 12.5], [32, 12.0], [31, 11.5], [30, 11.0], [29, 10.5], [28, 10.0], [27, 9.5], [26, 9.0], [24, 8.5], [23, 8.0], [22, 7.5], [21, 7.0], [20, 6.5], [19, 6.0], [18, 5.5], [17, 5.0], [16, 4.5], [15, 4.0], [14, 3.5], [13, 3.0], [12, 2.5]]}, "F": {"<25": [[50, 15.0], [49, 14.5], [47, 14.0], [46, 13.5], [44, 13.0], [43, 12.5], [42, 12.0], [40, 11.5], [39, 11.0], [37, 10.5], [36, 10.0], [35, 9.5], [33, 9.0], [32, 8.5], [30, 8.0], [29, 7.5], [28, 7.0], [26, 6.5], [25, 6.0], [23, 5.5], [22, 5.0], [21, 4.5], [19, 4.0], [18, 3.5], [16, 3.0], [15, 2.5]], "25-29": [[47, 15.0], [46, 14.5], [44, 14.0], [43, 13.5], [42, 13.0], [40, 12.5], [39, 12.0], [38, 11.5], [36, 11.0], [35, 10.5], [34, 10.0], [32, 9.5], [31, 9.0], [30, 8.5], [29, 8.0], [27, 7.5], [26, 7.0], [25, 6.5], [23, 6.0], [22, 5.5], [21, 5.0], [19, 4.5], [18, 4.0], [17, 3.5], [15, 3.0], [14, 2.5]], "30-34": [[44, 15.0], [42, 14.5], [41, 14.0], [40, 13.5], [39, 13.0], [37, 12.5], [36, 12.0], [35, 11.5], [34, 11.0], [32, 10.5], [31, 10.0], [30, 9.5], [29, 9.0], [27, 8.5], [26, 8.0], [25, 7.5], [24, 7.0], [22, 6.5], [21, 6.0], [20, 5.5], [19, 5.0], [17, 4.5], [16, 4.0], [15, 3.5], [14, 3.0], [12, 2.5]], "35-39": [[42, 15.0], [41, 14.5], [40, 14.0], [38, 13.5], [37, 13.0], [36, 12.5], [35, 12.0], [33, 11.5], [32, 11.0], [31, 10.5], [30, 10.0], [28, 9.5], [27, 9.0], [26, 8.5], [25, 8.0], [23, 7.5], [22, 7.0], [21, 6.5], [20, 6.0], [18, 5.5], [17, 5.0], [16, 4.5], [15, 4.0], [13, 3.5], [12, 3.0], [11, 2.5]], "40-44": [[39, 15.0], [38, 14.5], [37, 14.0], [36, 13.5], [35, 13.0], [33, 12.5], [32, 12.0], [31, 11.5], [30, 11.0], [29, 10.5], [27, 10.0], [26, 9.5], [25, 9.0], [24, 8.5], [23, 8.0], [21, 7.5], [20, 7.0], [19, 6.5], [18, 6.0], [17, 5.5], [15, 5.0], [14, 4.5], [13, 4.0], [12, 3.5], [11, 3.0], [10, 2.5]], "45-49": [[36, 15.0], [35, 14.5], [34, 14.0], [33, 13.5], [32, 13.0], [30, 12.5], [29, 12.0], [28, 11.5], [27, 11.0], [26, 10.5], [25, 10.0], [24, 9.5], [23, 9.0], [21, 8.5], [20, 8.0], [19, 7.5], [18, 7.0], [17, 6.5], [16, 6.0], [15, 5.5], [14, 5.0], [12, 4.5], [11, 4.0], [10, 3.5], [9, 3.0], [8, 2.5]], "50-54": [[34, 15.0], [33, 14.5], [32, 14.0], [31, 13.5], [30, 13.0], [29, 12.5], [28, 12.0], [26, 11.5], [25, 11.0], [24, 10.5], [23, 10.0], [22, 9.5], [21, 9.0], [20, 8.5], [19, 8.0], [18, 7.5], [17, 7.0], [16, 6.5], [15, 6.0], [13, 5.5], [12, 5.0], [11, 4.5], [10, 4.0], [9, 3.5], [8, 3.0], [7, 2.5]], "55-59": [[31, 15.0], [30, 14.5], [29, 14.0], [28, 13.5], [27, 13.0], [26, 12.5], [25, 12.0], [24, 11.5], [23, 11.0], [22, 10.5], [21, 10.0], [20, 9.5], [19, 9.0], [17, 8.5], [16, 8.0], [15, 7.5], [14, 7.0], [13, 6.5], [12, 6.0], [11, 5.5], [10, 5.0], [9, 4.5], [8, 4.0], [7, 3.5], [6, 3.0], [5, 2.5]], "60+": [[28, 15.0], [27, 14.5], [26, 14.0], [25, 13.5], [24, 13.0], [23, 12.5], [22, 12.0], [21, 11.5], [20, 11.0], [19, 10.5], [18, 10.0], [17, 9.5], [16, 9.0], [15, 8.5], [14, 8.0], [13, 7.5], [12, 7.0], [11, 6.5], [10, 6.0], [9, 5.5], [8, 5.0], [7, 4.5], [6, 4.0], [5, 3.5], [4, 3.0], [3, 2.5]]}}, "whtr": [[0.49, 20], [0.5, 19], [0.51, 18], [0.52, 17], [0.53, 16], [0.54, 15], [0.55, 12.5], [0.56, 10], [0.57, 7.5], [0.58, 5], [0.59, 2.5]]};
+        // Exact 2026 data arrays generated directly from uploaded CSV files
+        const db = {"run": {"M": {"<25": [[805, 50.0], [824, 49.5], [843, 49.0], [862, 48.0], [881, 47.0], [900, 46.0], [919, 45.0], [938, 44.0], [957, 43.0], [976, 42.0], [995, 41.0], [1014, 40.0], [1033, 39.0], [1052, 38.5], [1071, 38.0], [1090, 37.5], [1109, 37.0], [1128, 36.5], [1147, 36.0], [1176, 35.5], [1185, 35.0]], "25-29": [[815, 50.0], [834, 49.5], [853, 49.0], [872, 48.0], [891, 47.0], [910, 46.0], [929, 45.0], [948, 44.0], [967, 43.0], [986, 42.0], [1005, 41.0], [1024, 40.0], [1043, 39.0], [1062, 38.5], [1081, 38.0], [1100, 37.5], [1119, 37.0], [1138, 36.5], [1157, 36.0], [1176, 35.5], [1195, 35.0]], "30-34": [[822, 50.0], [843, 49.5], [864, 49.0], [885, 48.0], [906, 47.0], [928, 46.0], [949, 45.0], [970, 44.0], [991, 43.0], [1012, 42.0], [1033, 41.0], [1054, 40.0], [1075, 39.0], [1096, 38.5], [1117, 38.0], [1139, 37.5], [1160, 37.0], [1181, 36.5], [1202, 36.0], [1223, 35.5], [1244, 35.0]], "35-39": [[836, 50.0], [858, 49.5], [880, 49.0], [902, 48.0], [924, 47.0], [946, 46.0], [968, 45.0], [990, 44.0], [1012, 43.0], [1034, 42.0], [1056, 41.0], [1078, 40.0], [1100, 39.0], [1122, 38.5], [1144, 38.0], [1166, 37.5], [1188, 37.0], [1210, 36.5], [1232, 36.0], [1254, 35.5], [1276, 35.0]], "40-44": [[845, 50.0], [869, 49.5], [893, 49.0], [917, 48.0], [941, 47.0], [965, 46.0], [989, 45.0], [1013, 44.0], [1037, 43.0], [1061, 42.0], [1085, 41.0], [1108, 40.0], [1132, 39.0], [1156, 38.5], [1180, 38.0], [1204, 37.5], [1228, 37.0], [1252, 36.5], [1276, 36.0], [1300, 35.5], [1324, 35.0]], "45-49": [[870, 50.0], [894, 49.5], [918, 49.0], [942, 48.0], [965, 47.0], [989, 46.0], [1013, 45.0], [1037, 44.0], [1061, 43.0], [1085, 42.0], [1109, 41.0], [1132, 40.0], [1156, 39.0], [1180, 38.5], [1204, 38.0], [1228, 37.5], [1252, 37.0], [1275, 36.5], [1299, 36.0], [1323, 35.5], [1347, 35.0]], "50-54": [[909, 50.0], [932, 49.5], [955, 49.0], [978, 48.0], [1001, 47.0], [1024, 46.0], [1047, 45.0], [1070, 44.0], [1093, 43.0], [1116, 42.0], [1140, 41.0], [1163, 40.0], [1186, 39.0], [1209, 38.5], [1232, 38.0], [1255, 37.5], [1278, 37.0], [1301, 36.5], [1324, 36.0], [1347, 35.5], [1370, 35.0]], "55-59": [[928, 50.0], [952, 49.5], [977, 49.0], [1001, 48.0], [1026, 47.0], [1050, 46.0], [1074, 45.0], [1099, 44.0], [1123, 43.0], [1148, 42.0], [1172, 41.0], [1196, 40.0], [1221, 39.0], [1245, 38.5], [1270, 38.0], [1294, 37.5], [1318, 37.0], [1343, 36.5], [1367, 36.0], [1392, 35.5], [1416, 35.0]], "60+": [[1018, 50.0], [1039, 49.5], [1060, 49.0], [1081, 48.0], [1102, 47.0], [1124, 46.0], [1145, 45.0], [1166, 44.0], [1187, 43.0], [1208, 42.0], [1229, 41.0], [1250, 40.0], [1271, 39.0], [1292, 38.5], [1313, 38.0], [1335, 37.5], [1347, 37.0], [1356, 36.5], [1398, 36.0], [1419, 35.5], [1440, 35.0]]}, "F": {"<25": [[930, 50.0], [960, 49.5], [989, 49.0], [1019, 48.0], [1049, 47.0], [1078, 46.0], [1108, 45.0], [1138, 44.0], [1167, 43.0], [1197, 42.0], [1227, 41.0], [1256, 40.0], [1286, 39.0], [1315, 38.5], [1345, 38.0], [1375, 37.5], [1404, 37.0], [1434, 36.5], [1464, 36.0], [1493, 35.5], [1523, 35.0]], "25-29": [[955, 50.0], [984, 49.5], [1014, 49.0], [1043, 48.0], [1072, 47.0], [1101, 46.0], [1131, 45.0], [1160, 44.0], [1189, 43.0], [1218, 42.0], [1248, 41.0], [1277, 40.0], [1306, 39.0], [1335, 38.5], [1365, 38.0], [1394, 37.5], [1423, 37.0], [1452, 36.5], [1482, 36.0], [1511, 35.5], [1540, 35.0]], "30-34": [[970, 50.0], [1000, 49.5], [1031, 49.0], [1061, 48.0], [1091, 47.0], [1121, 46.0], [1152, 45.0], [1182, 44.0], [1212, 43.0], [1242, 42.0], [1273, 41.0], [1303, 40.0], [1333, 39.0], [1363, 38.5], [1394, 38.0], [1424, 37.5], [1454, 37.0], [1484, 36.5], [1515, 36.0], [1545, 35.5], [1575, 35.0]], "35-39": [[972, 50.0], [1003, 49.5], [1034, 49.0], [1065, 48.0], [1096, 47.0], [1127, 46.0], [1157, 45.0], [1188, 44.0], [1219, 43.0], [1250, 42.0], [1281, 41.0], [1312, 40.0], [1343, 39.0], [1374, 38.5], [1405, 38.0], [1436, 37.5], [1466, 37.0], [1497, 36.5], [1528, 36.0], [1559, 35.5], [1590, 35.0]], "40-44": [[1005, 50.0], [1035, 49.5], [1066, 49.0], [1096, 48.0], [1126, 47.0], [1157, 46.0], [1187, 45.0], [1217, 44.0], [1248, 43.0], [1278, 42.0], [1309, 41.0], [1339, 40.0], [1369, 39.0], [1400, 38.5], [1430, 38.0], [1460, 37.5], [1491, 37.0], [1521, 36.5], [1551, 36.0], [1582, 35.5], [1612, 35.0]], "45-49": [[1015, 50.0], [1046, 49.5], [1077, 49.0], [1108, 48.0], [1139, 47.0], [1170, 46.0], [1201, 45.0], [1232, 44.0], [1263, 43.0], [1294, 42.0], [1325, 41.0], [1356, 40.0], [1387, 39.0], [1418, 38.5], [1449, 38.0], [1480, 37.5], [1511, 37.0], [1542, 36.5], [1573, 36.0], [1604, 35.5], [1635, 35.0]], "50-54": [[1030, 50.0], [1063, 49.5], [1096, 49.0], [1128, 48.0], [1161, 47.0], [1194, 46.0], [1227, 45.0], [1259, 44.0], [1292, 43.0], [1325, 42.0], [1358, 41.0], [1390, 40.0], [1423, 39.0], [1456, 38.5], [1489, 38.0], [1521, 37.5], [1554, 37.0], [1587, 36.5], [1620, 36.0], [1652, 35.5], [1685, 35.0]], "55-59": [[1063, 50.0], [1096, 49.5], [1129, 49.0], [1162, 48.0], [1194, 47.0], [1227, 46.0], [1260, 45.0], [1293, 44.0], [1326, 43.0], [1359, 42.0], [1392, 41.0], [1424, 40.0], [1457, 39.0], [1490, 38.5], [1523, 38.0], [1556, 37.5], [1589, 37.0], [1621, 36.5], [1654, 36.0], [1687, 35.5], [1720, 35.0]], "60+": [[1100, 50.0], [1134, 49.5], [1168, 49.0], [1202, 48.0], [1236, 47.0], [1270, 46.0], [1304, 45.0], [1338, 44.0], [1372, 43.0], [1406, 42.0], [1440, 41.0], [1474, 40.0], [1508, 39.0], [1542, 38.5], [1576, 38.0], [1610, 37.5], [1644, 37.0], [1678, 36.5], [1712, 36.0], [1746, 35.5], [1780, 35.0]]}}, "situp": {"M": {"<25": [[58, 15.0], [57, 14.5], [56, 14.0], [55, 13.5], [54, 13.0], [53, 12.5], [52, 12.0], [51, 11.5], [50, 11.0], [49, 10.5], [48, 10.0], [47, 9.5], [46, 9.0], [45, 8.5], [44, 8.0], [43, 7.5], [42, 7.0], [41, 6.5], [40, 6.0], [39, 5.5], [38, 5.0], [37, 4.5], [36, 4.0], [35, 3.5], [34, 3.0], [33, 2.5]], "25-29": [[56, 15.0], [55, 14.5], [54, 14.0], [53, 13.5], [52, 13.0], [51, 12.5], [50, 12.0], [49, 11.5], [48, 11.0], [47, 10.5], [46, 10.0], [45, 9.5], [44, 9.0], [43, 8.5], [42, 8.0], [41, 7.5], [40, 7.0], [39, 6.5], [38, 6.0], [37, 5.5], [36, 5.0], [35, 4.5], [34, 4.0], [33, 3.5], [32, 3.0], [31, 2.5]], "30-34": [[54, 15.0], [53, 14.5], [52, 14.0], [51, 13.5], [50, 13.0], [49, 12.5], [48, 12.0], [47, 11.5], [46, 11.0], [45, 10.5], [44, 10.0], [43, 9.5], [42, 9.0], [41, 8.5], [40, 8.0], [39, 7.5], [38, 7.0], [37, 6.5], [36, 6.0], [35, 5.5], [34, 5.0], [33, 4.5], [32, 4.0], [31, 3.5], [30, 3.0], [29, 2.5]], "35-39": [[52, 15.0], [51, 14.5], [50, 14.0], [49, 13.5], [48, 13.0], [47, 12.5], [46, 12.0], [45, 11.5], [44, 11.0], [43, 10.5], [42, 10.0], [41, 9.5], [40, 9.0], [39, 8.5], [38, 8.0], [37, 7.5], [36, 7.0], [35, 6.5], [34, 6.0], [33, 5.5], [32, 5.0], [31, 4.5], [30, 4.0], [29, 3.5], [28, 3.0], [27, 2.5]], "40-44": [[50, 15.0], [49, 14.5], [48, 14.0], [47, 13.5], [46, 13.0], [45, 12.5], [44, 12.0], [43, 11.5], [42, 11.0], [41, 10.5], [40, 10.0], [39, 9.5], [38, 9.0], [37, 8.5], [36, 8.0], [35, 7.5], [34, 7.0], [33, 6.5], [32, 6.0], [31, 5.5], [30, 5.0], [29, 4.5], [28, 4.0], [27, 3.5], [26, 3.0], [25, 2.5]], "45-49": [[48, 15.0], [47, 14.5], [46, 14.0], [45, 13.5], [44, 13.0], [43, 12.5], [42, 12.0], [41, 11.5], [40, 11.0], [39, 10.5], [38, 10.0], [37, 9.5], [36, 9.0], [35, 8.5], [34, 8.0], [33, 7.5], [32, 7.0], [31, 6.5], [30, 6.0], [29, 5.5], [28, 5.0], [27, 4.5], [26, 4.0], [25, 3.5], [24, 3.0], [23, 2.5]], "50-54": [[46, 15.0], [45, 14.5], [44, 14.0], [43, 13.5], [42, 13.0], [41, 12.5], [40, 12.0], [39, 11.5], [38, 11.0], [37, 10.5], [36, 10.0], [35, 9.5], [34, 9.0], [33, 8.5], [32, 8.0], [31, 7.5], [30, 7.0], [29, 6.5], [28, 6.0], [27, 5.5], [26, 5.0], [25, 4.5], [24, 4.0], [23, 3.5], [22, 3.0], [21, 2.5]], "55-59": [[44, 15.0], [43, 14.5], [42, 14.0], [41, 13.5], [40, 13.0], [39, 12.5], [38, 12.0], [37, 11.5], [36, 11.0], [35, 10.5], [34, 10.0], [33, 9.5], [32, 9.0], [31, 8.5], [30, 8.0], [29, 7.5], [28, 7.0], [27, 6.5], [26, 6.0], [25, 5.5], [24, 5.0], [23, 4.5], [22, 4.0], [21, 3.5], [20, 3.0], [19, 2.5]], "60+": [[42, 15.0], [41, 14.5], [40, 14.0], [39, 13.5], [38, 13.0], [37, 12.5], [36, 12.0], [35, 11.5], [34, 11.0], [33, 10.5], [32, 10.0], [31, 9.5], [30, 9.0], [29, 8.5], [28, 8.0], [27, 7.5], [26, 7.0], [25, 6.5], [24, 6.0], [23, 5.5], [22, 5.0], [21, 4.5], [20, 4.0], [19, 3.5], [18, 3.0], [17, 2.5]]}, "F": {"<25": [[54, 15.0], [53, 14.5], [52, 14.0], [51, 13.5], [50, 13.0], [49, 12.5], [48, 12.0], [47, 11.5], [46, 11.0], [45, 10.5], [44, 10.0], [43, 9.5], [42, 9.0], [41, 8.5], [40, 8.0], [39, 7.5], [38, 7.0], [37, 6.5], [36, 6.0], [35, 5.5], [34, 5.0], [33, 4.5], [32, 4.0], [31, 3.5], [30, 3.0], [29, 2.5]], "25-29": [[50, 15.0], [49, 14.5], [48, 14.0], [47, 13.5], [46, 13.0], [45, 12.5], [44, 12.0], [43, 11.5], [42, 11.0], [41, 10.5], [40, 10.0], [39, 9.5], [38, 9.0], [37, 8.5], [36, 8.0], [35, 7.5], [34, 7.0], [33, 6.5], [32, 6.0], [31, 5.5], [30, 5.0], [29, 4.5], [28, 4.0], [27, 3.5], [26, 3.0], [25, 2.5]], "30-34": [[45, 15.0], [44, 14.5], [43, 14.0], [42, 13.5], [41, 13.0], [40, 12.5], [39, 12.0], [38, 11.5], [37, 11.0], [36, 10.5], [35, 10.0], [34, 9.5], [33, 9.0], [32, 8.5], [31, 8.0], [30, 7.5], [29, 7.0], [28, 6.5], [27, 6.0], [26, 5.5], [25, 5.0], [24, 4.5], [23, 4.0], [22, 3.5], [21, 3.0], [20, 2.5]], "35-39": [[43, 15.0], [42, 14.5], [41, 14.0], [40, 13.5], [39, 13.0], [38, 12.5], [37, 12.0], [36, 11.5], [35, 11.0], [34, 10.5], [33, 10.0], [32, 9.5], [31, 9.0], [30, 8.5], [29, 8.0], [28, 7.5], [27, 7.0], [26, 6.5], [25, 6.0], [24, 5.5], [23, 5.0], [22, 4.5], [21, 4.0], [20, 3.5], [19, 3.0], [18, 2.5]], "40-44": [[41, 15.0], [40, 14.5], [39, 14.0], [38, 13.5], [37, 13.0], [36, 12.5], [35, 12.0], [34, 11.5], [33, 11.0], [32, 10.5], [31, 10.0], [30, 9.5], [29, 9.0], [28, 8.5], [27, 8.0], [26, 7.5], [25, 7.0], [24, 6.5], [23, 6.0], [22, 5.5], [21, 5.0], [20, 4.5], [19, 4.0], [18, 3.5], [17, 3.0], [16, 2.5]], "45-49": [[35, 15.0], [34, 14.5], [33, 14.0], [32, 13.5], [31, 13.0], [30, 12.5], [29, 12.0], [28, 11.5], [27, 11.0], [26, 10.5], [25, 10.0], [24, 9.5], [23, 9.0], [22, 8.5], [21, 8.0], [20, 7.5], [19, 7.0], [18, 6.5], [17, 6.0], [16, 5.5], [15, 5.0], [14, 4.5], [13, 4.0], [12, 3.5], [11, 3.0], [10, 2.5]], "50-54": [[34, 15.0], [33, 14.5], [32, 14.0], [31, 13.5], [30, 13.0], [29, 12.5], [28, 12.0], [27, 11.5], [26, 11.0], [25, 10.5], [24, 10.0], [23, 9.5], [22, 9.0], [21, 8.5], [20, 8.0], [19, 7.5], [18, 7.0], [17, 6.5], [16, 6.0], [15, 5.5], [14, 5.0], [13, 4.5], [12, 4.0], [11, 3.5], [10, 3.0], [9, 2.5]], "55-59": [[32, 15.0], [31, 14.5], [30, 14.0], [29, 13.5], [28, 13.0], [27, 12.5], [26, 12.0], [25, 11.5], [24, 11.0], [23, 10.5], [22, 10.0], [21, 9.5], [20, 9.0], [19, 8.5], [18, 8.0], [17, 7.5], [16, 7.0], [15, 6.5], [14, 6.0], [13, 5.5], [12, 5.0], [11, 4.5], [10, 4.0], [9, 3.5], [8, 3.0], [7, 2.5]], "60+": [[31, 15.0], [30, 14.5], [29, 14.0], [28, 13.5], [27, 13.0], [26, 12.5], [25, 12.0], [24, 11.5], [23, 11.0], [22, 10.5], [21, 10.0], [20, 9.5], [19, 9.0], [18, 8.5], [17, 8.0], [16, 7.5], [15, 7.0], [14, 6.5], [13, 6.0], [12, 5.5], [11, 5.0], [10, 4.5], [9, 4.0], [8, 3.5], [7, 3.0], [6, 2.5]]}}, "pushup": {"M": {"<25": [[67, 15.0], [66, 14.5], [64, 14.0], [63, 13.5], [61, 13.0], [60, 12.5], [58, 12.0], [57, 11.5], [55, 11.0], [54, 10.5], [52, 10.0], [51, 9.5], [49, 9.0], [48, 8.5], [46, 8.0], [45, 7.5], [43, 7.0], [42, 6.5], [40, 6.0], [39, 5.5], [37, 5.0], [36, 4.5], [34, 4.0], [33, 3.5], [31, 3.0], [30, 2.5]], "25-29": [[63, 15.0], [62, 14.5], [60, 14.0], [59, 13.5], [57, 13.0], [56, 12.5], [55, 12.0], [53, 11.5], [52, 11.0], [50, 10.5], [49, 10.0], [48, 9.5], [46, 9.0], [45, 8.5], [43, 8.0], [42, 7.5], [41, 7.0], [39, 6.5], [38, 6.0], [36, 5.5], [35, 5.0], [34, 4.5], [32, 4.0], [31, 3.5], [29, 3.0], [28, 2.5]], "30-34": [[60, 15.0], [59, 14.5], [57, 14.0], [56, 13.5], [55, 13.0], [53, 12.5], [52, 12.0], [51, 11.5], [49, 11.0], [48, 10.5], [47, 10.0], [45, 9.5], [44, 9.0], [43, 8.5], [41, 8.0], [40, 7.5], [39, 7.0], [37, 6.5], [36, 6.0], [35, 5.5], [33, 5.0], [32, 4.5], [31, 4.0], [29, 3.5], [26, 3.0], [26, 2.5]], "35-39": [[56, 15.0], [55, 14.5], [53, 14.0], [52, 13.5], [51, 13.0], [49, 12.5], [48, 12.0], [47, 11.5], [45, 11.0], [44, 10.5], [43, 10.0], [41, 9.5], [40, 9.0], [39, 8.5], [38, 8.0], [36, 7.5], [35, 7.0], [34, 6.5], [32, 6.0], [31, 5.5], [30, 5.0], [28, 4.5], [27, 4.0], [26, 3.5], [24, 3.0], [23, 2.5]], "40-44": [[52, 15.0], [51, 14.5], [50, 14.0], [49, 13.5], [48, 13.0], [46, 12.5], [45, 12.0], [44, 11.5], [42, 11.0], [41, 10.5], [40, 10.0], [39, 9.5], [37, 9.0], [36, 8.5], [35, 8.0], [33, 7.5], [32, 7.0], [31, 6.5], [30, 6.0], [28, 5.5], [27, 5.0], [26, 4.5], [24, 4.0], [23, 3.5], [22, 3.0], [21, 2.5]], "45-49": [[49, 15.0], [47, 14.5], [46, 14.0], [45, 13.5], [44, 13.0], [43, 12.5], [42, 12.0], [40, 11.5], [39, 11.0], [38, 10.5], [37, 10.0], [36, 9.5], [35, 9.0], [33, 8.5], [32, 8.0], [31, 7.5], [30, 7.0], [29, 6.5], [28, 6.0], [26, 5.5], [25, 5.0], [24, 4.5], [23, 4.0], [22, 3.5], [21, 3.0], [19, 2.5]], "50-54": [[45, 15.0], [44, 14.5], [43, 14.0], [42, 13.5], [41, 13.0], [39, 12.5], [38, 12.0], [37, 11.5], [36, 11.0], [35, 10.5], [34, 10.0], [33, 9.5], [32, 9.0], [30, 8.5], [29, 8.0], [28, 7.5], [27, 7.0], [26, 6.5], [25, 6.0], [24, 5.5], [23, 5.0], [21, 4.5], [20, 4.0], [19, 3.5], [18, 3.0], [17, 2.5]], "55-59": [[42, 15.0], [41, 14.5], [40, 14.0], [39, 13.5], [38, 13.0], [36, 12.5], [35, 12.0], [34, 11.5], [33, 11.0], [32, 10.5], [31, 10.0], [30, 9.5], [29, 9.0], [27, 8.5], [26, 8.0], [25, 7.5], [24, 7.0], [23, 6.5], [22, 6.0], [21, 5.5], [20, 5.0], [18, 4.5], [17, 4.0], [16, 3.5], [15, 3.0], [14, 2.5]], "60+": [[38, 15.0], [37, 14.5], [36, 14.0], [35, 13.5], [34, 13.0], [33, 12.5], [32, 12.0], [31, 11.5], [30, 11.0], [29, 10.5], [28, 10.0], [27, 9.5], [26, 9.0], [24, 8.5], [23, 8.0], [22, 7.5], [21, 7.0], [20, 6.5], [19, 6.0], [18, 5.5], [17, 5.0], [16, 4.5], [15, 4.0], [14, 3.5], [13, 3.0], [12, 2.5]]}, "F": {"<25": [[50, 15.0], [49, 14.5], [47, 14.0], [46, 13.5], [44, 13.0], [43, 12.5], [42, 12.0], [40, 11.5], [39, 11.0], [37, 10.5], [36, 10.0], [35, 9.5], [33, 9.0], [32, 8.5], [30, 8.0], [29, 7.5], [28, 7.0], [26, 6.5], [25, 6.0], [23, 5.5], [22, 5.0], [21, 4.5], [19, 4.0], [18, 3.5], [16, 3.0], [15, 2.5]], "25-29": [[47, 15.0], [46, 14.5], [44, 14.0], [43, 13.5], [42, 13.0], [40, 12.5], [39, 12.0], [38, 11.5], [36, 11.0], [35, 10.5], [34, 10.0], [32, 9.5], [31, 9.0], [30, 8.5], [29, 8.0], [27, 7.5], [26, 7.0], [25, 6.5], [23, 6.0], [22, 5.5], [21, 5.0], [19, 4.5], [18, 4.0], [17, 3.5], [15, 3.0], [14, 2.5]], "30-34": [[44, 15.0], [42, 14.5], [41, 14.0], [40, 13.5], [39, 13.0], [37, 12.5], [36, 12.0], [35, 11.5], [34, 11.0], [32, 10.5], [31, 10.0], [30, 9.5], [29, 9.0], [27, 8.5], [26, 8.0], [25, 7.5], [24, 7.0], [22, 6.5], [21, 6.0], [20, 5.5], [19, 5.0], [17, 4.5], [16, 4.0], [15, 3.5], [14, 3.0], [12, 2.5]], "35-39": [[42, 15.0], [41, 14.5], [40, 14.0], [38, 13.5], [37, 13.0], [36, 12.5], [35, 12.0], [33, 11.5], [32, 11.0], [31, 10.5], [30, 10.0], [28, 9.5], [27, 9.0], [26, 8.5], [25, 8.0], [23, 7.5], [22, 7.0], [21, 6.5], [20, 6.0], [18, 5.5], [17, 5.0], [16, 4.5], [15, 4.0], [13, 3.5], [12, 3.0], [11, 2.5]], "40-44": [[39, 15.0], [38, 14.5], [37, 14.0], [36, 13.5], [35, 13.0], [33, 12.5], [32, 12.0], [31, 11.5], [30, 11.0], [29, 10.5], [27, 10.0], [26, 9.5], [25, 9.0], [24, 8.5], [23, 8.0], [21, 7.5], [20, 7.0], [19, 6.5], [18, 6.0], [17, 5.5], [15, 5.0], [14, 4.5], [13, 4.0], [12, 3.5], [11, 3.0], [10, 2.5]], "45-49": [[36, 15.0], [35, 14.5], [34, 14.0], [33, 13.5], [32, 13.0], [30, 12.5], [29, 12.0], [28, 11.5], [27, 11.0], [26, 10.5], [25, 10.0], [24, 9.5], [23, 9.0], [21, 8.5], [20, 8.0], [19, 7.5], [18, 7.0], [17, 6.5], [16, 6.0], [15, 5.5], [14, 5.0], [12, 4.5], [11, 4.0], [10, 3.5], [9, 3.0], [8, 2.5]], "50-54": [[34, 15.0], [33, 14.5], [32, 14.0], [31, 13.5], [30, 13.0], [29, 12.5], [28, 12.0], [26, 11.5], [25, 11.0], [24, 10.5], [23, 10.0], [22, 9.5], [21, 9.0], [20, 8.5], [19, 8.0], [18, 7.5], [17, 7.0], [16, 6.5], [15, 6.0], [13, 5.5], [12, 5.0], [11, 4.5], [10, 4.0], [9, 3.5], [8, 3.0], [7, 2.5]], "55-59": [[31, 15.0], [30, 14.5], [29, 14.0], [28, 13.5], [27, 13.0], [26, 12.5], [25, 12.0], [24, 11.5], [23, 11.0], [22, 10.5], [21, 10.0], [20, 9.5], [19, 9.0], [17, 8.5], [16, 8.0], [15, 7.5], [14, 7.0], [13, 6.5], [12, 6.0], [11, 5.5], [10, 5.0], [9, 4.5], [8, 4.0], [7, 3.5], [6, 3.0], [5, 2.5]], "60+": [[28, 15.0], [27, 14.5], [26, 14.0], [25, 13.5], [24, 13.0], [23, 12.5], [22, 12.0], [21, 11.5], [20, 11.0], [19, 10.5], [18, 10.0], [17, 9.5], [16, 9.0], [15, 8.5], [14, 8.0], [13, 7.5], [12, 7.0], [11, 6.5], [10, 6.0], [9, 5.5], [8, 5.0], [7, 4.5], [6, 4.0], [5, 3.5], [4, 3.0], [3, 2.5]]}}, "whtr": [[0.49, 20.0], [0.5, 19.0], [0.51, 18.0], [0.52, 17.0], [0.53, 16.0], [0.54, 15.0], [0.55, 12.5], [0.56, 10.0], [0.57, 7.5], [0.58, 5.0], [0.59, 2.5]]};
 
-        // Calculates exact points based on precise data mapped above
-        function calculatePoints(type, val, gender, ageGroup) {
-            // Check independent metrics first (WHtR)
+        // Score Evaluator
+        function evaluateScore(type, val, gender, ageGroup) {
+            // WHtR logic (lower is better, independent of gender/age)
             if (type === 'whtr') {
-                for (let arr of preciseData.whtr) {
+                for (let arr of db.whtr) {
                     if (val <= arr[0]) return arr[1];
                 }
-                return 0; // Exceeded maximum WHtR
+                return 0; // Exceeded max
             }
 
-            // Check exercise metrics exactly mapping to the proper gender and age
-            if (preciseData[type] && preciseData[type][gender] && preciseData[type][gender][ageGroup]) {
-                for (let arr of preciseData[type][gender][ageGroup]) {
-                    // Run logic: Values must be at or below target time (in seconds)
+            // Standard component logic
+            if (db[type] && db[type][gender] && db[type][gender][ageGroup]) {
+                const brackets = db[type][gender][ageGroup];
+                for (let arr of brackets) {
+                    // RUN: Must be <= target time
                     if (type === 'run' && val <= arr[0]) return arr[1];
-                    // Pushups/Situps logic: Values must be at or above target reps
+                    // PUSH/SIT: Must be >= target reps
                     if (type !== 'run' && val >= arr[0]) return arr[1];
                 }
             }
-            return 0; // Minimum requirements not met
+            return 0; // Minimum not met
         }
 
-        document.getElementById('calcForm').addEventListener('submit', (e) => {
+        // Handle Submission
+        document.getElementById('ptForm').addEventListener('submit', (e) => {
             e.preventDefault();
 
-            // Extract values
+            // Extract Values
             const name = document.getElementById('name').value;
             const gender = document.getElementById('gender').value;
             const ageGroup = document.getElementById('ageBracket').value;
@@ -267,98 +301,114 @@
             const situps = parseInt(document.getElementById('situps').value);
             const whtr = parseFloat(document.getElementById('whtr').value);
 
-            // Calculate exact scoring based on threshold points mapped to values
+            // Compute Points
             const runTotalSec = (runMin * 60) + runSec;
-            const ptsR = calculatePoints('run', runTotalSec, gender, ageGroup);
-            const ptsP = calculatePoints('pushup', pushups, gender, ageGroup);
-            const ptsS = calculatePoints('situp', situps, gender, ageGroup);
-            const ptsW = calculatePoints('whtr', whtr, null, null);
+            const ptsR = evaluateScore('run', runTotalSec, gender, ageGroup);
+            const ptsP = evaluateScore('pushup', pushups, gender, ageGroup);
+            const ptsS = evaluateScore('situp', situps, gender, ageGroup);
+            const ptsW = evaluateScore('whtr', whtr, null, null);
 
+            // Tally Score
             const total = parseFloat((ptsR + ptsP + ptsS + ptsW).toFixed(1));
             const hasZero = (ptsR === 0 || ptsP === 0 || ptsS === 0);
 
-            let status = 'FAILED';
-            let style = 'bg-rose-500/20 text-rose-400 border-rose-500/50 shadow-[0_0_10px_rgba(244,63,94,0.3)]';
+            let statusText = 'FAILED';
+            let statusStyle = 'bg-rose-500/20 text-rose-400 border-rose-500/50 shadow-[0_0_15px_rgba(244,63,94,0.3)]';
 
             if (total >= 90.0 && !hasZero) {
-                status = 'EXCELLENT';
-                style = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]';
+                statusText = 'EXCELLENT';
+                statusStyle = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.3)]';
             } else if (total >= 75.0 && !hasZero) {
-                status = 'SATISFACTORY';
-                style = 'bg-sky-500/20 text-sky-400 border-sky-500/50 shadow-[0_0_10px_rgba(56,189,248,0.3)]';
+                statusText = 'SATISFACTORY';
+                statusStyle = 'bg-sky-500/20 text-sky-400 border-sky-500/50 shadow-[0_0_15px_rgba(56,189,248,0.3)]';
             }
 
-            // Update user interface
-            document.getElementById('scoreTotal').innerText = total.toFixed(1);
+            // Animate Score Counter
+            const scoreDisplay = document.getElementById('scoreTotal');
+            let startScore = 0;
+            const interval = setInterval(() => {
+                startScore += Math.max((total - startScore) * 0.1, 0.1);
+                if (startScore >= total) {
+                    scoreDisplay.innerText = total.toFixed(1);
+                    clearInterval(interval);
+                } else {
+                    scoreDisplay.innerText = startScore.toFixed(1);
+                }
+            }, 20);
+
+            // Update Badge
             const badge = document.getElementById('scoreBadge');
-            badge.className = `mt-3 px-6 py-2 rounded-full text-xs font-black tracking-widest uppercase border transition-all ${style}`;
-            badge.innerText = status;
+            badge.className = `mt-6 px-8 py-2 rounded-full text-xs font-black tracking-widest uppercase border transition-all duration-300 ${statusStyle}`;
+            badge.innerText = statusText;
 
-            const updateBar = (id, val, max) => {
-                document.getElementById(`pts${id}`).innerText = val.toFixed(1);
-                document.getElementById(`bar${id}`).style.width = `${Math.min((val/max)*100, 100)}%`;
+            // Update Progress Bars
+            const setBar = (id, pts, max) => {
+                document.getElementById(`pts${id}`).innerText = pts.toFixed(1);
+                document.getElementById(`bar${id}`).style.width = `${Math.min((pts / max) * 100, 100)}%`;
             };
+            setBar('Run', ptsR, 50);
+            setBar('Push', ptsP, 15);
+            setBar('Sit', ptsS, 15);
+            setBar('Whtr', ptsW, 20);
 
-            updateBar('Run', ptsR, 50);
-            updateBar('Push', ptsP, 15);
-            updateBar('Sit', ptsS, 15);
-            updateBar('Whtr', ptsW, 20);
-
-            // Log save to localStorage
+            // Save to LocalStorage
             const record = {
                 name, bracket: ageGroup, gender,
                 runStr: `${runMin}:${runSec.toString().padStart(2, '0')}`,
-                pushups, situps, whtr: whtr.toFixed(2), total, status,
+                pushups, situps, whtr: whtr.toFixed(2), total, status: statusText,
                 date: new Date().toLocaleDateString()
             };
 
-            let logs = JSON.parse(localStorage.getItem('usaf_pfra_db')) || [];
+            let logs = JSON.parse(localStorage.getItem('usaf_pt_records')) || [];
             logs.unshift(record);
             if (logs.length > 12) logs.pop();
-            localStorage.setItem('usaf_pfra_db', JSON.stringify(logs));
+            localStorage.setItem('usaf_pt_records', JSON.stringify(logs));
 
             renderLogs();
         });
 
+        // History UI Renderer
         function renderLogs() {
-            const logs = JSON.parse(localStorage.getItem('usaf_pfra_db')) || [];
-            const tbody = document.getElementById('historyBody');
+            const logs = JSON.parse(localStorage.getItem('usaf_pt_records')) || [];
+            const tbody = document.getElementById('historyTable');
             tbody.innerHTML = '';
 
-            if(logs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500 text-xs tracking-wider">No sessions logged yet.</td></tr>`;
+            if (logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-slate-500 text-[11px] font-bold uppercase tracking-widest">No Previous Sessions</td></tr>`;
                 return;
             }
 
             logs.forEach(log => {
-                const color = log.status === 'FAILED' ? 'text-rose-400' : 'text-emerald-400';
+                const colorClass = log.status === 'FAILED' ? 'text-rose-400' : 'text-emerald-400';
+                
                 tbody.innerHTML += `
-                    <tr class="hover:bg-slate-800/40 transition-colors">
-                        <td class="p-3">
-                            <div class="font-bold text-slate-200">${log.name}</div>
-                            <div class="text-[10px] text-slate-500 uppercase">${log.date} • ${log.gender} (${log.bracket})</div>
+                    <tr class="hover:bg-slate-800/80 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="font-bold text-slate-100">${log.name}</div>
+                            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">${log.date} • ${log.gender} (${log.bracket})</div>
                         </td>
-                        <td class="p-3 text-center font-mono text-slate-300">${log.runStr}</td>
-                        <td class="p-3 text-center font-mono text-slate-300">${log.pushups} / ${log.situps}</td>
-                        <td class="p-3 text-center font-mono text-slate-300">${log.whtr}</td>
-                        <td class="p-3 text-right">
-                            <div class="font-black ${color} text-base">${log.total.toFixed(1)}</div>
-                            <div class="text-[9px] font-bold text-slate-500 uppercase">${log.status}</div>
+                        <td class="px-4 py-4 text-center font-mono text-slate-300">${log.runStr}</td>
+                        <td class="px-4 py-4 text-center font-mono text-slate-300">${log.pushups} / ${log.situps}</td>
+                        <td class="px-4 py-4 text-center font-mono text-slate-300">${log.whtr}</td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="font-black ${colorClass} text-xl">${log.total.toFixed(1)}</div>
+                            <div class="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest mt-0.5">${log.status}</div>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        document.getElementById('clearBtn').addEventListener('click', () => {
-            if(confirm("Erase all 12 saved sessions from this device?")) {
-                localStorage.removeItem('usaf_pfra_db');
+        // Database Cleanup
+        document.getElementById('clearLogs').addEventListener('click', () => {
+            if(confirm("Are you sure you want to clear your testing history?")) {
+                localStorage.removeItem('usaf_pt_records');
                 renderLogs();
             }
         });
 
-        // Setup display state on initial mount
-        renderLogs();
+        // Init
+        document.addEventListener('DOMContentLoaded', renderLogs);
     </script>
 </body>
 </html>
