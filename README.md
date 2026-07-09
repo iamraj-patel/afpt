@@ -1,4 +1,4 @@
-# 🇺🇸 USAF PFRA Calculator 2026
+# USAF PFRA Calculator 2026
 
 A modern, mobile-friendly U.S. Air Force Physical Fitness Readiness Assessment (PFRA) Calculator designed to help current and future Airmen estimate their fitness assessment score based on the latest Air Force fitness standards.
 
