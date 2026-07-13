@@ -1,1 +1,150 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>USAF PFRA Calculator 2026</title><meta name="description" content="Unofficial USAF PFRA score calculator using official uploaded PFRA scoring charts."><meta name="theme-color" content="#07111f"><link rel="icon" type="image/png" href="assets/icon-192.png"><link rel="apple-touch-icon" href="assets/icon-192.png"><link rel="manifest" href="site.webmanifest"><link rel="stylesheet" href="style.css"></head><body><a class="skip" href="#calculator">Skip to calculator</a><header class="hero"><nav class="topbar"><a class="brand" href="#"><span class="logoTile"><img src="aflogo.png" alt="U.S. Air Force logo"></span><span><b>USAF PFRA</b><small>2026 Calculator</small></span></a><a class="official" href="https://www.afpc.af.mil/Portals/70/documents/FITNESS/PFRA%20Scoring%20Charts.pdf" target="_blank" rel="noopener">Official Chart</a></nav><section class="heroGrid"><div><p class="eyebrow">Built from the official PFRA charts you provided</p><h1>Air Force PT Score Calculator</h1><p class="lead">Estimate your 2026 Physical Fitness Readiness Assessment score using the official point tables for your selected age group, scoring track, and event option.</p><div class="chips"><span>2-mile run</span><span>HAMR</span><span>Push-ups</span><span>Hand-release push-ups</span><span>Sit-ups</span><span>Reverse crunch</span><span>Plank</span><span>WHtR</span></div></div><aside class="scoreCard"><span class="scoreLogo"><img src="aflogo.png" alt="U.S. Air Force logo"></span><p>Final Calculated Score</p><div class="ring"><strong id="totalScore">0.0</strong><em>/100</em></div><div id="rating" class="rating wait">Waiting for values</div><p id="note" class="note">Enter your values below.</p></aside></section></header><main class="container"><section class="notice"><b>Disclaimer:</b> This is an unofficial planning calculator. Verify record scores with current AFPC/DAFMAN guidance and your UFPM/FAC.</section><form id="calculator" class="grid" autocomplete="off"><section class="card full"><div class="head"><span>01</span><div><h2>Profile</h2><p>Select scoring track and age group.</p></div></div><div class="two"><label>Sex / scoring track<select id="sex"><option value="male">Male</option><option value="female">Female</option></select></label><label>Age group<select id="ageGroup"></select></label></div></section><section class="card"><div class="head"><span>02</span><div><h2>Cardio</h2><p>50 points max</p></div></div><label>Event<select id="cardioEvent"><option value="run2mile">2-mile run</option><option value="hamr">20-meter HAMR</option></select></label><div id="runBox" class="two"><label>Minutes<input id="runMin" type="number" min="0" inputmode="numeric" placeholder="13"></label><label>Seconds<input id="runSec" type="number" min="0" max="59" inputmode="numeric" placeholder="35"></label></div><label id="hamrBox" class="hidden">HAMR shuttles<input id="hamrShuttles" type="number" min="0" inputmode="numeric" placeholder="85"></label><output><b id="cardioScore">0.0</b><small>/50</small></output><p id="cardioHint" class="hint"></p></section><section class="card"><div class="head"><span>03</span><div><h2>Body Composition</h2><p>20 points max</p></div></div><div class="two"><label>Height inches<input id="heightIn" type="number" min="1" step="0.25" inputmode="decimal" placeholder="65"></label><label>Waist inches<input id="waistIn" type="number" min="1" step="0.25" inputmode="decimal" placeholder="32"></label></div><output><b id="bodyScore">0.0</b><small>/20</small></output><p id="bodyHint" class="hint"></p></section><section class="card"><div class="head"><span>04</span><div><h2>Upper-Body Strength</h2><p>15 points max</p></div></div><label>Event<select id="strengthEvent"><option value="pushups">1-minute push-ups</option><option value="handReleasePushups">2-minute hand-release push-ups</option></select></label><label>Repetitions<input id="strengthReps" type="number" min="0" inputmode="numeric" placeholder="63"></label><output><b id="strengthScore">0.0</b><small>/15</small></output><p id="strengthHint" class="hint"></p></section><section class="card"><div class="head"><span>05</span><div><h2>Core Endurance</h2><p>15 points max</p></div></div><label>Event<select id="coreEvent"><option value="situps">1-minute sit-ups</option><option value="reverseCrunches">2-minute cross-leg reverse crunches</option><option value="plank">Forearm plank</option></select></label><label id="coreRepBox">Repetitions<input id="coreReps" type="number" min="0" inputmode="numeric" placeholder="56"></label><div id="plankBox" class="two hidden"><label>Minutes<input id="plankMin" type="number" min="0" inputmode="numeric" placeholder="3"></label><label>Seconds<input id="plankSec" type="number" min="0" max="59" inputmode="numeric" placeholder="35"></label></div><output><b id="coreScore">0.0</b><small>/15</small></output><p id="coreHint" class="hint"></p></section><section class="card full"><div class="head"><span>06</span><div><h2>Score Breakdown</h2><p>Review each component and projected total.</p></div></div><div class="breakdown"><div>Cardio<b id="bdCardio">0.0</b></div><div>Body<b id="bdBody">0.0</b></div><div>Strength<b id="bdStrength">0.0</b></div><div>Core<b id="bdCore">0.0</b></div></div><div class="bar"><i id="scoreBar"></i></div><div class="buttons"><button type="button" id="resetBtn">Reset Form</button><button type="button" id="copyBtn">Copy Summary</button></div><textarea id="copyBox" readonly aria-label="Score summary"></textarea></section></form><section class="card full standards"><h2>Standards and scoring notes</h2><ul><li>The calculator uses the point rows from the official PFRA charts you uploaded.</li><li>Scores are calculated by sex/scoring track, age group, and selected event.</li><li>Body composition uses the waist-to-height ratio table and rounds the ratio to the nearest hundredth for lookup.</li><li>No cookies, localStorage, or saved-progress tracking are used.</li></ul></section></main><footer class="footer"><p>Website created and maintained by <strong>Raj Patel</strong>.</p><div class="footerLinks"><a href="https://iamraj-patel.github.io/" target="_blank" rel="noopener">Portfolio</a><a href="https://github.com/iamraj-patel" target="_blank" rel="noopener">GitHub</a></div></footer><script src="standards.js"></script><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <title>USAF PFRA Calculator 2026</title>
+    <meta name="description"
+        content="Unofficial USAF PFRA score calculator using official uploaded PFRA scoring charts.">
+    <meta name="theme-color" content="#07111f">
+    <link rel="icon" type="image/png" href="assets/icon-192.png">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body><a class="skip" href="#calculator">Skip to calculator</a>
+    <header class="hero">
+        <nav class="topbar"><a class="brand" href="#"><span class="logoTile"><img src="aflogo.png"
+                        alt="U.S. Air Force logo"></span><span><b>USAF PFRA</b><small>2026
+                        Calculator</small></span></a><a class="official"
+                href="https://www.afpc.af.mil/Portals/70/documents/FITNESS/PFRA%20Scoring%20Charts.pdf" target="_blank"
+                rel="noopener">Official Chart</a></nav>
+        <section class="heroGrid">
+            <div>
+                <p class="eyebrow">Built from the official PFRA charts you provided</p>
+                <h1>Air Force PT Score Calculator</h1>
+                <p class="lead">Estimate your 2026 Physical Fitness Readiness Assessment score using the official point
+                    tables for your selected age group, scoring track, and event option.</p>
+                <div class="chips"><span>2-mile run</span><span>HAMR</span><span>Push-ups</span><span>Hand-release
+                        push-ups</span><span>Sit-ups</span><span>Reverse
+                        crunch</span><span>Plank</span><span>WHtR</span></div>
+            </div>
+            <aside class="scoreCard"><span class="scoreLogo"><img src="aflogo.png" alt="U.S. Air Force logo"></span>
+                <p>Final Calculated Score</p>
+                <div class="ring"><strong id="totalScore">0.0</strong><em>/100</em></div>
+                <div id="rating" class="rating wait">Waiting for values</div>
+                <p id="note" class="note">Enter your values below.</p>
+            </aside>
+        </section>
+    </header>
+    <main class="container">
+        <section class="notice"><b>Disclaimer:</b> This is an unofficial planning calculator. Verify record scores with
+            current AFPC/DAFMAN guidance and your UFPM/FAC.</section>
+        <form id="calculator" class="grid" autocomplete="off">
+            <section class="card full">
+                <div class="head"><span>01</span>
+                    <div>
+                        <h2>Profile</h2>
+                        <p>Select scoring track and age group.</p>
+                    </div>
+                </div>
+                <div class="two"><label>Sex / scoring track<select id="sex">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select></label><label>Age group<select id="ageGroup"></select></label></div>
+            </section>
+            <section class="card">
+                <div class="head"><span>02</span>
+                    <div>
+                        <h2>Cardio</h2>
+                        <p>50 points max</p>
+                    </div>
+                </div><label>Event<select id="cardioEvent">
+                        <option value="run2mile">2-mile run</option>
+                        <option value="hamr">20-meter HAMR</option>
+                    </select></label>
+                <div id="runBox" class="two"><label>Minutes<input id="runMin" type="number" min="0" inputmode="numeric"
+                            placeholder="13"></label><label>Seconds<input id="runSec" type="number" min="0" max="59"
+                            inputmode="numeric" placeholder="35"></label></div><label id="hamrBox" class="hidden">HAMR
+                    shuttles<input id="hamrShuttles" type="number" min="0" inputmode="numeric"
+                        placeholder="85"></label><output><b id="cardioScore">0.0</b><small>/50</small></output>
+                <p id="cardioHint" class="hint"></p>
+            </section>
+            <section class="card">
+                <div class="head"><span>03</span>
+                    <div>
+                        <h2>Body Composition</h2>
+                        <p>20 points max</p>
+                    </div>
+                </div>
+                <div class="two"><label>Height inches<input id="heightIn" type="number" min="1" step="0.25"
+                            inputmode="decimal" placeholder="65"></label><label>Waist inches<input id="waistIn"
+                            type="number" min="1" step="0.25" inputmode="decimal" placeholder="32"></label></div>
+                <output><b id="bodyScore">0.0</b><small>/20</small></output>
+                <p id="bodyHint" class="hint"></p>
+            </section>
+            <section class="card">
+                <div class="head"><span>04</span>
+                    <div>
+                        <h2>Upper-Body Strength</h2>
+                        <p>15 points max</p>
+                    </div>
+                </div><label>Event<select id="strengthEvent">
+                        <option value="pushups">1-minute push-ups</option>
+                        <option value="handReleasePushups">2-minute hand-release push-ups</option>
+                    </select></label><label>Repetitions<input id="strengthReps" type="number" min="0"
+                        inputmode="numeric" placeholder="63"></label><output><b
+                        id="strengthScore">0.0</b><small>/15</small></output>
+                <p id="strengthHint" class="hint"></p>
+            </section>
+            <section class="card">
+                <div class="head"><span>05</span>
+                    <div>
+                        <h2>Core Endurance</h2>
+                        <p>15 points max</p>
+                    </div>
+                </div><label>Event<select id="coreEvent">
+                        <option value="situps">1-minute sit-ups</option>
+                        <option value="reverseCrunches">2-minute cross-leg reverse crunches</option>
+                        <option value="plank">Forearm plank</option>
+                    </select></label><label id="coreRepBox">Repetitions<input id="coreReps" type="number" min="0"
+                        inputmode="numeric" placeholder="56"></label>
+                <div id="plankBox" class="two hidden"><label>Minutes<input id="plankMin" type="number" min="0"
+                            inputmode="numeric" placeholder="3"></label><label>Seconds<input id="plankSec" type="number"
+                            min="0" max="59" inputmode="numeric" placeholder="35"></label></div><output><b
+                        id="coreScore">0.0</b><small>/15</small></output>
+                <p id="coreHint" class="hint"></p>
+            </section>
+            <section class="card full">
+                <div class="head"><span>06</span>
+                    <div>
+                        <h2>Score Breakdown</h2>
+                        <p>Review each component and projected total.</p>
+                    </div>
+                </div>
+                <div class="breakdown">
+                    <div>Cardio<b id="bdCardio">0.0</b></div>
+                    <div>Body<b id="bdBody">0.0</b></div>
+                    <div>Strength<b id="bdStrength">0.0</b></div>
+                    <div>Core<b id="bdCore">0.0</b></div>
+                </div>
+                <div class="bar"><i id="scoreBar"></i></div>
+                <div class="buttons"><button type="button" id="resetBtn">Reset Form</button><button type="button"
+                        id="copyBtn">Copy Summary</button></div><textarea id="copyBox" readonly
+                    aria-label="Score summary"></textarea>
+            </section>
+        </form>
+    </main>
+    <footer class="footer">
+        <p>Website created and maintained by <strong>Raj Patel</strong>.</p>
+        <div class="footerLinks"><a href="https://iamraj-patel.github.io/" target="_blank"
+                rel="noopener">Portfolio</a><a href="https://github.com/iamraj-patel" target="_blank"
+                rel="noopener">GitHub</a></div>
+    </footer>
+    <script src="standards.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
